@@ -1,15 +1,20 @@
-DROP TABLE IF EXISTS user CASCADE;
+DROP TABLE IF EXISTS favorite CASCADE;
+DROP TABLE IF EXISTS comment CASCADE;
+DROP TABLE IF EXISTS votes CASCADE;
+DROP TABLE IF EXISTS task CASCADE;
+DROP TABLE IF EXISTS event CASCADE;
+DROP TABLE IF EXISTS trip_member CASCADE;
+DROP TABLE IF EXISTS trip CASCADE;
+DROP TABLE IF EXISTS users CASCADE;
 
-CREATE TABLE user(
+CREATE TABLE users(
     id SERIAL PRIMARY KEY, 
-    email TEXT UNIQUE NOT NULL
+    email TEXT UNIQUE NOT NULL,
     name TEXT NOT NULL,
     password TEXT NOT NULL,
     created_at TIMESTAMP DEFAULT NOW(),
     updated_at TIMESTAMP DEFAULT NOW()
 );
-
-DROP TABLE IF EXISTS trip CASCADE;
 
 CREATE TABLE trip(
     id SERIAL PRIMARY KEY, 
@@ -17,36 +22,30 @@ CREATE TABLE trip(
     description TEXT,
     start_date TIMESTAMP,
     end_date TIMESTAMP,
-    created_by INT REFERENCES user(id),
+    created_by INTEGER REFERENCES users(id),
     created_at TIMESTAMP DEFAULT NOW(),
-    updated_at TIMESTAMP DEFAULT NOW(),
+    updated_at TIMESTAMP DEFAULT NOW()
 );
 
-DROP TABLE IF EXISTS trip_members CASCADE;
 
 CREATE TABLE trip_member(
     id SERIAL PRIMARY KEY, 
-    user_email TEXT NOT NULL REFERENCES user(email),
-    trip_id INT NOT NULL REFERENCES trip(id),
-    created_at TIMESTAMP DEFAULT NOW(),
+    user_email TEXT NOT NULL REFERENCES users(email),
+    trip_id INTEGER NOT NULL REFERENCES trip(id),
+    created_at TIMESTAMP DEFAULT NOW()
 );
 
-DROP TABLE IF EXISTS event CASCADE;
-
-CREATE TYPE eventstatus AS ENUM ('suggested', 'pending', 'confirmed', 'cancelled');
 CREATE TABLE event(
     id SERIAL PRIMARY KEY,
-    trip_id INT NOT NULL REFERENCES trip(id),
+    trip_id INTEGER NOT NULL REFERENCES trip(id),
     title TEXT NOT NULL,
     location TEXT,
     date_time TIMESTAMP,
-    status eventstatus,
-    created_by TEXT REFERENCES user(id),
+    status TEXT,
+    created_by INTEGER REFERENCES users(id),
     created_at TIMESTAMP DEFAULT NOW(),
-    updated_at TIMESTAMP DEFAULT NOW(),
+    updated_at TIMESTAMP DEFAULT NOW()
 );
-
-DROP TABLE IF EXISTS task CASCADE;
 
 CREATE TABLE task(
     id SERIAL PRIMARY KEY,
@@ -54,40 +53,34 @@ CREATE TABLE task(
     title TEXT NOT NULL,
     description TEXT,
     due_date TIMESTAMP,
-    assigned_to TEXT REFERENCES user(email),
-    complete BOOLEAN DEFAULT FALSE,
-    created_by INT REFERENCES user(id),
+    assigned_to TEXT REFERENCES users(email),
+    complete BOOLEAN DEFAULT false,
+    created_by INTEGER REFERENCES users(id),
     created_at TIMESTAMP DEFAULT NOW(),
-    updated_at TIMESTAMP DEFAULT NOW(),
+    updated_at TIMESTAMP DEFAULT NOW()
 );
-
-DROP TABLE IF EXISTS votes CASCADE;
 
 CREATE TABLE vote(
     id SERIAL PRIMARY KEY,
-    event_id INT REFERENCES event(id),
-    trip_id INT REFERENCES trip(id),
+    event_id INTEGER REFERENCES event(id),
+    trip_id INTEGER REFERENCES trip(id),
     vote_value BOOLEAN,
     created_at TIMESTAMP DEFAULT NOW(),
-    updated_at TIMESTAMP DEFAULT NOW(),
+    updated_at TIMESTAMP DEFAULT NOW()
 );
-
-DROP TABLE IF EXISTS comments CASCADE;
 
 CREATE TABLE comment(
     id SERIAL PRIMARY KEY,
-    event_id INT REFERENCES event(id),
-    trip_id INT REFERENCES trip(id),
-    user_id INT REFERENCES user(id),
+    event_id INTEGER REFERENCES event(id),
+    trip_id INTEGER REFERENCES trip(id),
+    user_id INTEGER REFERENCES users(id),
     comment_text TEXT NOT NULL,
-    created_at TIMESTAMP DEFAULT NOW(),
+    created_at TIMESTAMP DEFAULT NOW()
 );
-
-DROP TABLE IF EXISTS favorites CASCADE;
 
 CREATE TABLE favorite(
     id SERIAL PRIMARY KEY,
-    user_id INT REFERENCES user(id),
-    trip_id INT REFERENCES trip(id),
-    created_at TIMESTAMP DEFAULT NOW(),
+    user_id INTEGER REFERENCES users(id),
+    trip_id INTEGER REFERENCES trip(id),
+    created_at TIMESTAMP DEFAULT NOW()
 );
