@@ -1,11 +1,11 @@
 import express from 'express';
 import cors from 'cors';
 import morgan from 'morgan';
-
 import authRoutes from './routes/auth.js';
 import userRoutes from './routes/users.js';
 import favoriteRoutes from './routes/favorites.js';
 import taskRoutes from './routes/tasks.js';
+import tripRoutes from  './routes/trips.js'
 
 const app = express();
 
@@ -18,6 +18,7 @@ app.use(morgan('dev'));
 // Routes
 app.use('/api', authRoutes);
 app.use('/api/user', userRoutes);
+app.use('/api/trip', tripRoutes);
 app.use('/api/favorites', favoriteRoutes);
 app.use('/api/tasks', taskRoutes);
 
