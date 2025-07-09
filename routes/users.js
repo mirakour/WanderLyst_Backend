@@ -9,8 +9,9 @@ router.get('/me', requireUser, async (req, res) => {
   try {
     const { id } = req.user;
 
+    // Inline query since getUserById is not available
     const { rows: [user] } = await client.query(
-      `SELECT id, email, name FROM users WHERE id = $1`,
+      "SELECT id, email, name FROM users WHERE id = $1",
       [id]
     );
 

@@ -1,3 +1,4 @@
+
 import db from '../client.js';
 
 // Create a task
@@ -41,4 +42,5 @@ export async function deleteTask(id) {
     [id]
   );
   return deleted;
+
 }

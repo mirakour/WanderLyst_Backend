@@ -28,3 +28,4 @@ export async function deleteComment(id, user_id) {
   );
   return deleted;
 }
+

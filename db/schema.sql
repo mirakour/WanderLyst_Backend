@@ -22,6 +22,7 @@ CREATE TABLE trip(
     description TEXT,
     start_date TIMESTAMP,
     end_date TIMESTAMP,
+    public BOOLEAN DEFAULT false,
     created_by INTEGER REFERENCES users(id),
     created_at TIMESTAMP DEFAULT NOW(),
     updated_at TIMESTAMP DEFAULT NOW()
@@ -55,6 +56,7 @@ CREATE TABLE task(
     due_date TIMESTAMP,
     assigned_to TEXT REFERENCES users(email),
     complete BOOLEAN DEFAULT false,
+    cancelled BOOLEAN DEFAULT false,
     created_by INTEGER REFERENCES users(id),
     created_at TIMESTAMP DEFAULT NOW(),
     updated_at TIMESTAMP DEFAULT NOW()

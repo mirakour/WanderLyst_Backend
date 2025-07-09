@@ -1,5 +1,6 @@
 import db from "../client.js";
 
+
 // Create a favorite
 export async function createFavorite({ user_id, trip_id }) {
   const { rows: [favorite] } = await db.query(
@@ -26,3 +27,4 @@ export async function deleteFavorite({ user_id, trip_id }) {
   );
   return deleted;
 }
+
