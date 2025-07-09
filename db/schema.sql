@@ -60,13 +60,14 @@ CREATE TABLE task(
     updated_at TIMESTAMP DEFAULT NOW()
 );
 
-CREATE TABLE vote(
-    id SERIAL PRIMARY KEY,
-    event_id INTEGER REFERENCES event(id),
-    trip_id INTEGER REFERENCES trip(id),
-    vote_value BOOLEAN,
-    created_at TIMESTAMP DEFAULT NOW(),
-    updated_at TIMESTAMP DEFAULT NOW()
+CREATE TABLE vote (
+  id SERIAL PRIMARY KEY,
+  event_id INTEGER REFERENCES event(id),
+  trip_id INTEGER REFERENCES trip(id),
+  vote_value BOOLEAN,
+  user_id INTEGER REFERENCES users(id),  -- added to CreateVote route
+  created_at TIMESTAMP DEFAULT NOW(),
+  updated_at TIMESTAMP DEFAULT NOW()
 );
 
 CREATE TABLE comment(
