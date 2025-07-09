@@ -11,9 +11,6 @@ const app = express();
 // Middleware
 
 app.use(express.json());
-
-
-
 // Routes
 app.use('/api', authRoutes);
 app.use('/api/user', userRoutes);
