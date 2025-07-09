@@ -1,6 +1,6 @@
 import express from "express";
 import db from "../db/client.js";
-import { createTrip, getTrip, getTripId } from "../db/queries/trips.js";
+import { createTrip, getTrip, getTripId, getPublicTrips } from "../db/queries/trips.js";
 import { getTripMember } from "../db/queries/trip_members.js";
 import requireUser from "../middleware/auth.js";
 
@@ -52,6 +52,14 @@ router.get("/:tripid/members", requireUser, async (req, res) => {
     return res.status(404).send({ error: "trip id doesnt exist" });
   }
   res.send(tripMemberId);
+});
+
+router.get("/public", async (req, res) => {
+  const trips = await getPublicTrips();
+  if (!trips) {
+    return res.status(404).send({ error: "These are not the trips you are looking for" });
+  }
+  res.send(trips);
 });
 
 export default router;

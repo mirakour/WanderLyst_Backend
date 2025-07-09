@@ -23,6 +23,7 @@ async function seed() {
     const trip1 = await createTrip({
       title: "Destination Trip",
       description: "Family Vacay",
+      public: "True",
       start_date: "2025-07-03T21:47:06.143Z",
       end_date: "2025-07-03T21:47:06.143Z",
       created_by: user1.id,
