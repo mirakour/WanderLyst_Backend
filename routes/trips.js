@@ -36,7 +36,7 @@ router.post("/", requireUser, async (req, res) => {
 
 //get trip details
 router.get("/:tripid", requireUser, async (req, res) => {
-  const id = Number(req.params.id);
+  const id = req.params.tripid;
   const tripId = await getTripId(id);
 
   if (!tripId) {
