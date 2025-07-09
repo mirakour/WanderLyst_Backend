@@ -30,3 +30,11 @@ export async function getTripId(id) {
 }
 
 
+export async function getPublicTrips() {
+  const sql = `SELECT * from trip WHERE public = true;`;
+  const { rows: trips } = await db.query(sql);
+  return trips[0];
+}
+
+
+
