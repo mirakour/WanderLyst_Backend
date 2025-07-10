@@ -8,16 +8,7 @@ const router = express.Router();
 
 //get trip user is a part of
 router.get("/", requireUser, async (req, res) => {
-  const getTrips = await getTrip({
-    id,
-    title,
-    description,
-    start_date,
-    end_date,
-    created_by,
-    created_at,
-    updated_at,
-  });
+  const getTrips = await getTrip(req.user.id)
   res.send(getTrips);
 });
 
@@ -28,9 +19,9 @@ router.post("/", requireUser, async (req, res) => {
     description,
     start_date,
     end_date,
-    created_by,
+    created_by: req.user.id,
   });
-
+  
   res.sendStatus(201).send(newTrip);
 });
 
