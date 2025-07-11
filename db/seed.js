@@ -50,8 +50,8 @@ async function seed() {
     });
     
     const user7 = await createUsers({
-      email: "6test@test.com",
-      name: "test6",
+      email: "7test@test.com",
+      name: "test7",
       password: "password",
     });  
 
