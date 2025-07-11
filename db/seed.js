@@ -18,7 +18,42 @@ async function seed() {
       name: "test1",
       password: "password",
     });
+
+    const user2 = await createUsers({
+      email: "2test@test.com",
+      name: "test2",
+      password: "password",
+    });
     
+    const user3 = await createUsers({
+      email: "3test@test.com",
+      name: "test3",
+      password: "password",
+    });
+
+    const user4 = await createUsers({
+      email: "4test@test.com",
+      name: "test4",
+      password: "password",
+    });
+
+    const user5 = await createUsers({
+      email: "5test@test.com",
+      name: "test5",
+      password: "password",
+    });
+
+    const user6 = await createUsers({
+      email: "6test@test.com",
+      name: "test6",
+      password: "password",
+    });
+    
+    const user7 = await createUsers({
+      email: "6test@test.com",
+      name: "test6",
+      password: "password",
+    });  
 
     const trip1 = await createTrip({
       title: "Destination Trip",
@@ -29,9 +64,82 @@ async function seed() {
       created_by: user1.id,
     });
 
+    const trip2 = await createTrip({
+      title: "Disney",
+      description: "To see Mickey",
+      public: "True",
+      start_date: "2025-07-03T21:47:06.143Z",
+      end_date: "2025-07-03T21:47:06.143Z",
+      created_by: user3.id,
+    });
+
+    const trip3 = await createTrip({
+      title: "Back to Mackinac",
+      description: "to/from ferry time",
+      public: "False",
+      start_date: "2025-07-03T21:47:06.143Z",
+      end_date: "2025-07-03T21:47:06.143Z",
+      created_by: user5.id,
+    });
+
+    const trip4 = await createTrip({
+      title: "Solo Dolo",
+      description: "me time",
+      public: "False",
+      start_date: "2025-07-03T21:47:06.143Z",
+      end_date: "2025-07-03T21:47:06.143Z",
+      created_by: user7.id,
+    });
+
+
     const trip_member1 = await createTripMember({
       user_email: user1.email,
       trip_id: trip1.id,
+    });
+
+    const trip_member2 = await createTripMember({
+      user_email: user2.email,
+      trip_id: trip1.id,
+    });
+
+    const trip_member3 = await createTripMember({
+      user_email: user3.email,
+      trip_id: trip1.id,
+    });
+
+    const trip_member4 = await createTripMember({
+      user_email: user4.email,
+      trip_id: trip1.id,
+    });
+
+    const trip_member5 = await createTripMember({
+      user_email: user3.email,
+      trip_id: trip2.id,
+    });
+
+    const trip_member6 = await createTripMember({
+      user_email: user4.email,
+      trip_id: trip2.id,
+    });
+
+     const trip_member7 = await createTripMember({
+      user_email: user5.email,
+      trip_id: trip2.id,
+    });
+
+    const trip_member8 = await createTripMember({
+      user_email: user6.email,
+      trip_id: trip2.id,
+    });
+
+     const trip_member9 = await createTripMember({
+      user_email: user5.email,
+      trip_id: trip3.id,
+    });
+
+    const trip_member10 = await createTripMember({
+      user_email: user7.email,
+      trip_id: trip4.id,
     });
 
     const event1 = await createEvent({
