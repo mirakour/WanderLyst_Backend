@@ -7,3 +7,10 @@ export async function createEvent({trip_id, title, location, status, created_by}
   );
   return result;
 }
+
+export async function getTripEvents({trip_id}) {
+  const sql = await db.query(
+    "SELECT * FROM event WHERE trip_id = $1;",[trip_id]
+  )
+  return sql.rows;
+}
