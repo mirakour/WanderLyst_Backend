@@ -22,6 +22,7 @@ CREATE TABLE trip(
     description TEXT,
     start_date TIMESTAMP,
     end_date TIMESTAMP,
+    public BOOLEAN DEFAULT false,
     created_by INTEGER REFERENCES users(id),
     created_at TIMESTAMP DEFAULT NOW(),
     updated_at TIMESTAMP DEFAULT NOW()
@@ -31,6 +32,7 @@ CREATE TABLE trip(
 CREATE TABLE trip_member(
     id SERIAL PRIMARY KEY, 
     user_email TEXT NOT NULL REFERENCES users(email),
+    user_id TEXT NOT NULL REFERENCES users(id),
     trip_id INTEGER NOT NULL REFERENCES trip(id),
     created_at TIMESTAMP DEFAULT NOW()
 );
@@ -61,13 +63,14 @@ CREATE TABLE task(
     updated_at TIMESTAMP DEFAULT NOW()
 );
 
-CREATE TABLE vote(
-    id SERIAL PRIMARY KEY,
-    event_id INTEGER REFERENCES event(id),
-    trip_id INTEGER REFERENCES trip(id),
-    vote_value BOOLEAN,
-    created_at TIMESTAMP DEFAULT NOW(),
-    updated_at TIMESTAMP DEFAULT NOW()
+CREATE TABLE vote (
+  id SERIAL PRIMARY KEY,
+  event_id INTEGER REFERENCES event(id),
+  trip_id INTEGER REFERENCES trip(id),
+  vote_value BOOLEAN,
+  user_id INTEGER REFERENCES users(id),  -- added to CreateVote route
+  created_at TIMESTAMP DEFAULT NOW(),
+  updated_at TIMESTAMP DEFAULT NOW()
 );
 
 CREATE TABLE comment(
