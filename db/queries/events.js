@@ -12,4 +12,5 @@ export async function getTripEvents({trip_id}) {
   const sql = await db.query(
     "SELECT * FROM event WHERE trip_id = $1;",[trip_id]
   )
+  return sql.rows;
 }
