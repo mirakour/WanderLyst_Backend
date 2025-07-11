@@ -14,15 +14,21 @@ router.get("/", requireUser, async (req, res) => {
 
 //post newly creeated trip
 router.post("/", requireUser, async (req, res) => {
+  const title = req.body.title;
+  const description = req.body.description;
+  const start_date = req.body.start_date;
+  const end_date = req.body.end_date;
+  const created_by = req.user.id;
+
   const newTrip = await createTrip({
     title,
     description,
     start_date,
     end_date,
-    created_by: req.user.id,
+    created_by,
   });
-  
-  res.sendStatus(201).send(newTrip);
+  //console.log(newTrip)
+  res.sendStatus(201);
 });
 
 //get trip details
