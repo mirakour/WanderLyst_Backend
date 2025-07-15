@@ -1,13 +1,13 @@
 import express from "express";
 import db from "../db/client.js";
-import { createTrip, getTrip, getTripId, getPublicTrips } from "../db/queries/trips.js";
+import { createTrip, getTrip, getTripId, getPublic_SharedTrips } from "../db/queries/trips.js";
 import { getTripMember } from "../db/queries/trip_members.js";
 import requireUser from "../middleware/auth.js";
 
 const router = express.Router();
 
 //get trip user is a part of
-router.get("/", requireUser, async (req, res) => {
+router.get("/", async (req, res) => {
   const getTrips = await getTrip(req.user.id)
   res.send(getTrips);
 });
@@ -45,12 +45,19 @@ router.get("/:tripid/members", requireUser, async (req, res) => {
   res.send(tripMemberId);
 });
 
-router.get("/public", async (req, res) => {
-  const trips = await getPublicTrips();
-  if (!trips) {
-    return res.status(404).send({ error: "These are not the trips you are looking for" });
-  }
-  res.send(trips);
-});
+//get public_shared trips
+router.get("/public_shared", async (req, res) => {
+  try {
+    const trips = await getPublic_SharedTrips();
 
+    if (!trips) {
+      return res.status(404).json({ error: "These are not the trips you are looking for" });
+    }
+
+    res.json(trips);
+  } catch (err) {
+    console.error("Error fetching public_shared trips:", err);
+    res.status(500).json({ error: "Internal server error" });
+  }
+})
 export default router;
