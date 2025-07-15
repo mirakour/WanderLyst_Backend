@@ -38,7 +38,7 @@ router.post("/", requireUser, async (req, res) => {
     created_by: req.user.id,
   });
   
-  res.sendStatus(201).send(newTrip);
+  res.sendStatus(201).json(newTrip);
 });
 
 //get trip details
