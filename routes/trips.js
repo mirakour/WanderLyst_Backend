@@ -6,8 +6,24 @@ import requireUser from "../middleware/auth.js";
 
 const router = express.Router();
 
+//get public_shared trips
+router.get("/public_shared", async (req, res) => {
+  try {
+    const trips = await getPublic_SharedTrips();
+
+    if (!trips) {
+      return res.status(404).json({ error: "These are not the trips you are looking for" });
+    }
+
+    res.json(trips);
+  } catch (err) {
+    console.error("Error fetching public_shared trips:", err);
+    res.status(500).json({ error: "Internal server error" });
+  }
+})
+
 //get trip user is a part of
-router.get("/", async (req, res) => {
+router.get("/", requireUser, async (req, res) => {
   const getTrips = await getTrip(req.user.id)
   res.send(getTrips);
 });
@@ -33,6 +49,9 @@ router.get("/:tripid", requireUser, async (req, res) => {
   if (!tripId) {
     return res.status(404).send({ error: "trip doesnt exist" });
   }
+
+  //Todo Public Status of trip go next if true or check if user is trip member to return unauthorized if not public and not current user is not trip member
+
   res.send(tripId);
 });
 
@@ -45,19 +64,5 @@ router.get("/:tripid/members", requireUser, async (req, res) => {
   res.send(tripMemberId);
 });
 
-//get public_shared trips
-router.get("/public_shared", async (req, res) => {
-  try {
-    const trips = await getPublic_SharedTrips();
 
-    if (!trips) {
-      return res.status(404).json({ error: "These are not the trips you are looking for" });
-    }
-
-    res.json(trips);
-  } catch (err) {
-    console.error("Error fetching public_shared trips:", err);
-    res.status(500).json({ error: "Internal server error" });
-  }
-})
 export default router;

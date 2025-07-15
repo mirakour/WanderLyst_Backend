@@ -17,13 +17,14 @@ app.use(cors());
 app.use(express.json());
 
 // Routes
-app.use('/api', authRoutes);
 app.use('/api/user', userRoutes);
 app.use('/api/trip', tripRoutes);
 app.use('/api/favorites', favoriteRoutes);
 app.use('/api/tasks', taskRoutes);
 app.use('/api/votes', voteRoutes);
 app.use('/api/comments', commentRouter);
+app.use('/auth', authRoutes);
+
 
 // Health check
 app.get('/', (req, res) => {
