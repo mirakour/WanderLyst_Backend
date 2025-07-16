@@ -22,9 +22,17 @@ router.get("/public", async (req, res) => {
 
 
 //get trip user is a part of
-router.get("/", async (req, res) => {
-  const getTrips = await getMyTrips(req.user.id)
-  res.send(getTrips);
+router.get("/mytrips",requireUser, async (req, res) => {
+try {
+  console.log(req.user.id)
+  const trips = await getMyTrips(req.user.id)
+  res.send(trips);
+  console.log(trips)
+} catch (error) {
+  console.log(error)
+  res.send(error)
+}
+
 });
 
 //post newly creeated trip
