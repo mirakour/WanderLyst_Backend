@@ -1,16 +1,38 @@
 import express from "express";
 import db from "../db/client.js";
-import { createTrip, getTrip, getTripId, getPublicTrips } from "../db/queries/trips.js";
+import { createTrip, getMyTrips, getTripId, getPublicTrips } from "../db/queries/trips.js";
 import { getTripMember } from "../db/queries/trip_members.js";
 import requireUser from "../middleware/auth.js";
 import { getTripEvents, createEvent } from "../db/queries/events.js";
 
 const router = express.Router();
+router.get("/public", async (req, res) => {
+  try {
+      const trips = await getPublicTrips();
+  if (!trips) {
+    return res.status(404).send({ error: "These are not the trips you are looking for" });
+  }
+  res.send(trips);
+  } catch (error) {
+    console.log(error)
+    res.send(error)
+  }
+
+});
+
 
 //get trip user is a part of
-router.get("/", requireUser, async (req, res) => {
-  const getTrips = await getTrip(req.user.id)
-  res.send(getTrips);
+router.get("/mytrips",requireUser, async (req, res) => {
+try {
+  console.log(req.user.id)
+  const trips = await getMyTrips(req.user.id)
+  res.send(trips);
+  console.log(trips)
+} catch (error) {
+  console.log(error)
+  res.send(error)
+}
+
 });
 
 //post newly creeated trip
@@ -32,16 +54,6 @@ router.post("/", requireUser, async (req, res) => {
   res.sendStatus(201);
 });
 
-//get trip details
-router.get("/:tripid", requireUser, async (req, res) => {
-  const id = req.params.tripid;
-  const tripId = await getTripId(id);
-
-  if (!tripId) {
-    return res.status(404).send({ error: "trip doesnt exist" });
-  }
-  res.send(tripId);
-});
 
 //get events in the trip
 router.get("/:tripid/events", requireUser, async (req, res) => {
@@ -61,6 +73,8 @@ router.post("/:tripid/events", requireUser, async (req, res) => {
   res.status(201).send(events);
 });
 
+
+//get trip members
 router.get("/:tripid/members", requireUser, async (req, res) => {
   const id = Number(req.params.trip_id);
   const tripMemberId = await getTripMember(id);
@@ -70,12 +84,15 @@ router.get("/:tripid/members", requireUser, async (req, res) => {
   res.send(tripMemberId);
 });
 
-router.get("/public", async (req, res) => {
-  const trips = await getPublicTrips();
-  if (!trips) {
-    return res.status(404).send({ error: "These are not the trips you are looking for" });
+//get trip details
+router.get("/:tripid", requireUser, async (req, res) => {
+  const id = req.params.tripid;
+  const tripId = await getTripId(id);
+
+  if (!tripId) {
+    return res.status(404).send({ error: "trip doesnt exist" });
   }
-  res.send(trips);
+  res.send(tripId);
 });
 
 export default router;
