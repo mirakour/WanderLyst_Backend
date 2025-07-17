@@ -50,16 +50,15 @@ router.post("/", requireUser, async (req, res) => {
     end_date,
     created_by,
   });
-  //console.log(newTrip)
+  console.log(newTrip)
   res.sendStatus(201);
 });
 
 
 //get events in the trip
-router.get("/:tripid/events", requireUser, async (req, res) => {
-    const id = Number(req.params.tripid);
+router.get("/:id/events", requireUser, async (req, res) => {
+    const id = Number(req.params.id);
     const events = getTripEvents(id);
-    
     if (!events) {
     return res.status(404).send({ error: "events doesnt exist" });
   }
@@ -67,7 +66,7 @@ router.get("/:tripid/events", requireUser, async (req, res) => {
 });
 
 //post event to a trip
-router.post("/:tripid/events", requireUser, async (req, res) => {
+router.post("/:id/events", requireUser, async (req, res) => {
   const id = Number(req.params.id);
   createEvent(id, req.body.title, req.body.location, req.body.status, req.body.created_by)
   res.status(201).send(events);
@@ -75,8 +74,8 @@ router.post("/:tripid/events", requireUser, async (req, res) => {
 
 
 //get trip members
-router.get("/:tripid/members", requireUser, async (req, res) => {
-  const id = Number(req.params.trip_id);
+router.get("/:id/members", requireUser, async (req, res) => {
+  const id = Number(req.params.id);
   const tripMemberId = await getTripMember(id);
   if (!tripMemberId) {
     return res.status(404).send({ error: "trip id doesnt exist" });
@@ -85,10 +84,9 @@ router.get("/:tripid/members", requireUser, async (req, res) => {
 });
 
 //get trip details
-router.get("/:tripid", requireUser, async (req, res) => {
-  const id = req.params.tripid;
+router.get("/:id", requireUser, async (req, res) => {
+  const id = req.params.id;
   const tripId = await getTripId(id);
-
   if (!tripId) {
     return res.status(404).send({ error: "trip doesnt exist" });
   }
