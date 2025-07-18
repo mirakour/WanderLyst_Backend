@@ -32,6 +32,7 @@ CREATE TABLE trip(
 CREATE TABLE trip_member(
     id SERIAL PRIMARY KEY, 
     user_email TEXT NOT NULL REFERENCES users(email),
+    user_id TEXT NOT NULL REFERENCES users(id),
     trip_id INTEGER NOT NULL REFERENCES trip(id),
     created_at TIMESTAMP DEFAULT NOW()
 );

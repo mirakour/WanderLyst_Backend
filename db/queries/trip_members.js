@@ -11,5 +11,5 @@ export async function createTripMember({user_email, trip_id}) {
 export async function getTripMember(trip_id) {
   const sql = `SELECT * FROM trip_member where trip_id = $1;`;
   const { rows: tripmember } = await db.query(sql, [trip_id]);
-  return tripmember[0];
+  return tripmember;
 }

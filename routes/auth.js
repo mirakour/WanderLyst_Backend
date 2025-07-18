@@ -2,6 +2,7 @@ import express from 'express';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import client from '../db/client.js';
+import {} from '../db/queries/users.js'
 
 const router = express.Router();
 const JWT_SECRET = process.env.JWT_SECRET;
@@ -12,6 +13,17 @@ const generateTokens = (user) => {
   const refreshToken = jwt.sign({ id: user.id }, JWT_SECRET, { expiresIn: '7d' });
   return { accessToken, refreshToken };
 };
+
+
+export const verifyToken = (req, res, next)=>{
+    if (!req.headers[`authorization`]){return res.status(401).send(`No token provided`)};
+    const authHeader = req.headers[`authorization`];
+    const token = authHeader.split(' ')[1];
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    req.user = decoded;
+    next();
+};
+
 
 // POST /auth/register
 router.post('/register', async (req, res) => {
