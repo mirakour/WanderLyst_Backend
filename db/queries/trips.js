@@ -1,10 +1,14 @@
 import db from "../client.js";
 
-export async function createTrip({title, description, start_date, end_date, created_by,
-}) {
-  const sql = `INSERT INTO trip (title, description, start_date, end_date, created_by) VALUES ($1, $2, $3, $4, $5) RETURNING *;`;
-  const { rows: trips } = await db.query(sql, [title, description, start_date, end_date, created_by]);
-  return trips;
+
+export async function createTrip({title, description, public_shared, start_date, end_date, created_by,
+}) { const {rows: [result] } = await db.query(
+    `INSERT INTO trip (title, description, public_shared, start_date, end_date, created_by) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *;`,
+    [title, description, public_shared, start_date, end_date, created_by]
+  );
+  console.log(result);
+  return result;
+
 }
 //get all trips with logged in user
 export async function getMyTrips(id) {
@@ -19,7 +23,8 @@ export async function getTripId(id) {
   return trips[0];
 }
 
-export async function getPublicTrips() {
+
+export async function getPublic_SharedTrips() {
   const sql = `SELECT * from trip WHERE public_shared = true;`;
   const { rows: trips } = await db.query(sql);
   return trips;

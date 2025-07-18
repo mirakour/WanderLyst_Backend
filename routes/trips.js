@@ -1,6 +1,6 @@
 import express from "express";
 import db from "../db/client.js";
-import { createTrip, getMyTrips, getTripId, getPublicTrips } from "../db/queries/trips.js";
+import { createTrip, getTrip, getTripId, getPublic_SharedTrips } from "../db/queries/trips.js";
 import { getTripMember } from "../db/queries/trip_members.js";
 import requireUser from "../middleware/auth.js";
 import { getTripEvents, createEvent } from "../db/queries/events.js";
@@ -20,6 +20,22 @@ router.get("/public", async (req, res) => {
 
 });
 
+
+//get public_shared trips
+router.get("/public_shared", async (req, res) => {
+  try {
+    const trips = await getPublic_SharedTrips();
+
+    if (!trips) {
+      return res.status(404).json({ error: "These are not the trips you are looking for" });
+    }
+
+    res.json(trips);
+  } catch (err) {
+    console.error("Error fetching public_shared trips:", err);
+    res.status(500).json({ error: "Internal server error" });
+  }
+})
 
 //get trip user is a part of
 router.get("/mytrips",requireUser, async (req, res) => {
@@ -50,6 +66,7 @@ router.post("/", requireUser, async (req, res) => {
     end_date,
     created_by,
   });
+
   console.log(newTrip)
   res.sendStatus(201);
 });
@@ -82,6 +99,7 @@ router.get("/:id/members", requireUser, async (req, res) => {
   }
   res.send(tripMemberId);
 });
+
 
 //get trip details
 router.get("/:id", requireUser, async (req, res) => {

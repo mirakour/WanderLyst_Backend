@@ -58,7 +58,7 @@ async function seed() {
     const trip1 = await createTrip({
       title: "Destination Trip",
       description: "Family Vacay",
-      public: "True",
+      public_shared: true,
       start_date: "2025-07-03T21:47:06.143Z",
       end_date: "2025-07-03T21:47:06.143Z",
       created_by: user1.id,
@@ -67,7 +67,7 @@ async function seed() {
     const trip2 = await createTrip({
       title: "Disney",
       description: "To see Mickey",
-      public: "True",
+      public_shared: true,
       start_date: "2025-07-03T21:47:06.143Z",
       end_date: "2025-07-03T21:47:06.143Z",
       created_by: user3.id,
@@ -76,7 +76,7 @@ async function seed() {
     const trip3 = await createTrip({
       title: "Back to Mackinac",
       description: "to/from ferry time",
-      public: "False",
+      public_shared: false,
       start_date: "2025-07-03T21:47:06.143Z",
       end_date: "2025-07-03T21:47:06.143Z",
       created_by: user5.id,
@@ -85,7 +85,7 @@ async function seed() {
     const trip4 = await createTrip({
       title: "Solo Dolo",
       description: "me time",
-      public: "False",
+      public_shared: false,
       start_date: "2025-07-03T21:47:06.143Z",
       end_date: "2025-07-03T21:47:06.143Z",
       created_by: user7.id,

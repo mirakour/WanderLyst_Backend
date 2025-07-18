@@ -14,6 +14,7 @@ const generateTokens = (user) => {
   return { accessToken, refreshToken };
 };
 
+
 export const verifyToken = (req, res, next)=>{
     if (!req.headers[`authorization`]){return res.status(401).send(`No token provided`)};
     const authHeader = req.headers[`authorization`];
@@ -22,6 +23,7 @@ export const verifyToken = (req, res, next)=>{
     req.user = decoded;
     next();
 };
+
 
 // POST /auth/register
 router.post('/register', async (req, res) => {
@@ -82,7 +84,7 @@ router.post('/logout', (req, res) => {
   res.status(200).json({ message: 'Logged out. Please remove token on client.' });
 });
 
-// POST /api/refresh
+// POST /auth/refresh
 router.post('/refresh', async (req, res) => {
   const { refreshToken } = req.body;
 
