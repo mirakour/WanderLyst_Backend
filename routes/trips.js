@@ -8,7 +8,7 @@ import { getTripEvents, createEvent } from "../db/queries/events.js";
 const router = express.Router();
 router.get("/public", async (req, res) => {
   try {
-      const trips = await getPublicTrips();
+      const trips = await getPublic_SharedTrips();
   if (!trips) {
     return res.status(404).send({ error: "These are not the trips you are looking for" });
   }
