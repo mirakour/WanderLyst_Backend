@@ -3,7 +3,7 @@ import db from "./client.js";
 import { createEvent } from "./queries/events.js";
 import { createFavorite } from "./queries/favorites.js";
 import { createTrip } from "./queries/trips.js";
-import { createUsers } from "./queries/users.js";
+import { createUser } from "./queries/users.js";
 import { createTask } from "./queries/tasks.js";
 import { createVote } from "./queries/votes.js";
 import { createTripMember } from "./queries/trip_members.js";
@@ -13,43 +13,43 @@ async function seed() {
   try {
     await db.connect();
 
-    const user1 = await createUsers({
+    const user1 = await createUser({
       email: "1test@test.com",
       name: "test1",
       password: "password",
     });
 
-    const user2 = await createUsers({
+    const user2 = await createUser({
       email: "2test@test.com",
       name: "test2",
       password: "password",
     });
     
-    const user3 = await createUsers({
+    const user3 = await createUser({
       email: "3test@test.com",
       name: "test3",
       password: "password",
     });
 
-    const user4 = await createUsers({
+    const user4 = await createUser({
       email: "4test@test.com",
       name: "test4",
       password: "password",
     });
 
-    const user5 = await createUsers({
+    const user5 = await createUser({
       email: "5test@test.com",
       name: "test5",
       password: "password",
     });
 
-    const user6 = await createUsers({
+    const user6 = await createUser({
       email: "6test@test.com",
       name: "test6",
       password: "password",
     });
     
-    const user7 = await createUsers({
+    const user7 = await createUser({
       email: "7test@test.com",
       name: "test7",
       password: "password",
