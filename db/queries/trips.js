@@ -29,3 +29,9 @@ export async function getPublic_SharedTrips() {
   const { rows: trips } = await db.query(sql);
   return trips;
 }
+
+export async function getPublic_SharedTrip(id) {
+  const sql = `SELECT * from trip WHERE id = $1 AND public_shared = true;`;
+  const { rows: trips } = await db.query(sql, id);
+  return trips[0];
+}
