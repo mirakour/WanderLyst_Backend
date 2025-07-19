@@ -1,6 +1,6 @@
 import express from "express";
 import db from "../db/client.js";
-import { createTrip, getTripId, getPublic_SharedTrips } from "../db/queries/trips.js";
+import { createTrip, getMyTrips, getTripId, getPublic_SharedTrips } from "../db/queries/trips.js";
 import { getTripMember } from "../db/queries/trip_members.js";
 import requireUser from "../middleware/auth.js";
 import { getTripEvents, createEvent } from "../db/queries/events.js";
