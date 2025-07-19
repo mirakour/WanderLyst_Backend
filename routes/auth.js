@@ -49,7 +49,7 @@ router.post('/login', async (req, res) => {
     const { rows: [user] } = await client.query(`SELECT * FROM users WHERE email = $1`, [email]);
 
     if (!user) return res.status(401).json({ error: 'Invalid email or password' });
-    console.log(user)
+    // console.log(user)
     const isMatch = await bcrypt.compare(password, user.password);
 
     if (!isMatch) return res.status(401).json({ error: 'Invalid emaill or password' });
