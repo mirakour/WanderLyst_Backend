@@ -158,6 +158,7 @@ async function seed() {
       trip_id: trip1.id,
       title: "overall trip title",
       location: "washington dc",
+      date_time: "2025-07-03T21:47:06.143Z",
       status: "confirmed",
       created_by: user1.id,
     });

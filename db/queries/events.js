@@ -1,11 +1,17 @@
 import db from "../client.js";
 
-export async function createEvent({trip_id, title, location, status, created_by}) {
+export async function createEvent({trip_id, title, location, date_time, status, created_by}) {
   const result = await db.query(
-    `INSERT INTO event (trip_id, title, location, status, created_by) VALUES ($1, $2, $3, $4, $5) RETURNING *;`,
-    [trip_id, title, location, status, created_by]
+    `INSERT INTO event (trip_id, title, location, date_time, status, created_by) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *;`,
+    [trip_id, title, location, date_time, status, created_by]
   );
   return result;
+}
+
+export async function editEvent(trip_id, title, location, date_time, status) {
+  const sql = await db.query(`UPDATE event SET title = $1, location = $2, date_time = $3, status = $4 WHERE id = $5;`,
+  [title, location, date_time, status, trip_id]
+  );
 }
 
 export async function getTripEvents(trip_id) {
