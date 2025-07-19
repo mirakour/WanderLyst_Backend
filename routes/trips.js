@@ -1,6 +1,6 @@
 import express from "express";
 import db from "../db/client.js";
-import { createTrip, getMyTrips, getTripId, getPublic_SharedTrips } from "../db/queries/trips.js";
+import { createTrip, getMyTrips, getTripId, getPublicTripId, getPublic_SharedTrips } from "../db/queries/trips.js";
 import { getTripMember } from "../db/queries/trip_members.js";
 import requireUser from "../middleware/auth.js";
 import { getTripEvents, createEvent } from "../db/queries/events.js";
@@ -21,21 +21,25 @@ router.get("/public", async (req, res) => {
 });
 
 
-//get public_shared trips
-router.get("/public_shared", async (req, res) => {
-  try {
-    const trips = await getPublic_SharedTrips();
-
-    if (!trips) {
-      return res.status(404).json({ error: "These are not the trips you are looking for" });
-    }
-
-    res.json(trips);
-  } catch (err) {
-    console.error("Error fetching public_shared trips:", err);
-    res.status(500).json({ error: "Internal server error" });
+//get trip details
+router.get("/public/:id", async (req, res) => {
+  const id = req.params.id;
+  const tripId = await getPublicTripId(id);
+  if (!tripId) {
+    return res.status(404).send({ error: "trip doesnt exist" });
   }
-})
+  res.send(tripId);
+});
+
+//get events in the trip
+router.get("/public/:id/events", async (req, res) => {
+    const id = Number(req.params.id);
+    const events = await getTripEvents(id);
+    if (!events) {
+    return res.status(404).send({ error: "events doesnt exist" });
+  }
+  res.status(200).send(events);
+});
 
 //get trip user is a part of
 router.get("/mytrips",requireUser, async (req, res) => {

@@ -23,6 +23,12 @@ export async function getTripId(id) {
   return trips[0];
 }
 
+//get a trip of a certain id
+export async function getPublicTripId(id) {
+  const sql = `SELECT * from trip WHERE public_shared = true AND id = $1;`;
+  const { rows: trips } = await db.query(sql, [id]);
+  return trips[0];
+}
 
 export async function getPublic_SharedTrips() {
   const sql = `SELECT * from trip WHERE public_shared = true;`;
