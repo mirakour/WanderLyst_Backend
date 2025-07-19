@@ -1,26 +1,25 @@
 import express from 'express';
 import client from '../db/client.js';
 import requireUser from '../middleware/auth.js';
+import { getUserById, getUserId } from '../db/queries/users.js'
 
 const router = express.Router();
 
 // GET /api/user/me
 router.get('/me', requireUser, async (req, res) => {
+
+  const id = req.user.id
+
   try {
-    const { id } = req.user;
 
-    // Inline query since getUserById is not available
-    const { rows: [user] } = await client.query(
-      "SELECT id, email, name FROM users WHERE id = $1",
-      [id]
-    );
+  const userInfo = await getUserById(id);
 
-    if (!user) {
+    if (!userInfo) {
       return res.status(404).json({ error: 'User not found' });
     }
 
-    res.json({ user });
-  } catch (err) {
+        res.status(201).json(userInfo)  } 
+  catch (err) {
     console.error('❌ Error fetching user info:', err);
     res.status(500).json({ error: 'Internal server error' });
   }

@@ -2,6 +2,7 @@ import express from 'express';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import client from '../db/client.js';
+import {} from '../db/queries/users.js'
 
 const router = express.Router();
 const JWT_SECRET = process.env.JWT_SECRET;
@@ -13,7 +14,7 @@ const generateTokens = (user) => {
   return { accessToken, refreshToken };
 };
 
-// POST /api/register
+// POST /auth/register
 router.post('/register', async (req, res) => {
   const { email, name, password } = req.body;
 
@@ -40,7 +41,7 @@ router.post('/register', async (req, res) => {
   }
 });
 
-// POST /api/login
+// POST /auth/login
 router.post('/login', async (req, res) => {
   const { email, password } = req.body;
 
@@ -66,13 +67,13 @@ router.post('/login', async (req, res) => {
   }
 });
 
-// POST /api/logout
+// POST /auth/logout
 router.post('/logout', (req, res) => {
   // In stateless JWT systems, logout is handled client-side
   res.status(200).json({ message: 'Logged out. Please remove token on client.' });
 });
 
-// POST /api/refresh
+// POST /auth/refresh
 router.post('/refresh', async (req, res) => {
   const { refreshToken } = req.body;
 

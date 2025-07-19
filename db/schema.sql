@@ -22,7 +22,7 @@ CREATE TABLE trip(
     description TEXT,
     start_date TIMESTAMP,
     end_date TIMESTAMP,
-    public BOOLEAN DEFAULT false,
+    public_shared BOOLEAN DEFAULT false,
     created_by INTEGER REFERENCES users(id),
     created_at TIMESTAMP DEFAULT NOW(),
     updated_at TIMESTAMP DEFAULT NOW()
@@ -32,7 +32,7 @@ CREATE TABLE trip(
 CREATE TABLE trip_member(
     id SERIAL PRIMARY KEY, 
     user_email TEXT NOT NULL REFERENCES users(email),
-    user_id TEXT NOT NULL REFERENCES users(id),
+    user_id INTEGER NOT NULL REFERENCES users(id),
     trip_id INTEGER NOT NULL REFERENCES trip(id),
     created_at TIMESTAMP DEFAULT NOW()
 );
