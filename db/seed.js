@@ -8,6 +8,7 @@ import { createTask } from "./queries/tasks.js";
 import { createVote } from "./queries/votes.js";
 import { createTripMember } from "./queries/trip_members.js";
 import { createComment } from "./queries/comments.js";
+import bcrypt from "bcrypt";
 
 async function seed() {
   try {
@@ -16,43 +17,44 @@ async function seed() {
     const user1 = await createUser({
       email: "1test@test.com",
       name: "test1",
-      password: "password",
+      password: await bcrypt.hash("password", 5),
     });
 
     const user2 = await createUser({
       email: "2test@test.com",
       name: "test2",
-      password: "password",
+      password: await bcrypt.hash("password", 5),
     });
     
     const user3 = await createUser({
       email: "3test@test.com",
       name: "test3",
-      password: "password",
+      password: await bcrypt.hash("password", 5),
+
     });
 
     const user4 = await createUser({
       email: "4test@test.com",
       name: "test4",
-      password: "password",
+      password: await bcrypt.hash("password", 5),
     });
 
     const user5 = await createUser({
       email: "5test@test.com",
       name: "test5",
-      password: "password",
+      password: await bcrypt.hash("password", 5),
     });
 
     const user6 = await createUser({
       email: "6test@test.com",
       name: "test6",
-      password: "password",
+      password: await bcrypt.hash("password", 5),
     });
     
     const user7 = await createUser({
       email: "7test@test.com",
       name: "test7",
-      password: "password",
+      password: await bcrypt.hash("password", 5),
     });  
 
     const trip1 = await createTrip({
