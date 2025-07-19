@@ -14,17 +14,6 @@ const generateTokens = (user) => {
   return { accessToken, refreshToken };
 };
 
-
-export const verifyToken = (req, res, next)=>{
-    if (!req.headers[`authorization`]){return res.status(401).send(`No token provided`)};
-    const authHeader = req.headers[`authorization`];
-    const token = authHeader.split(' ')[1];
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    req.user = decoded;
-    next();
-};
-
-
 // POST /auth/register
 router.post('/register', async (req, res) => {
   const { email, name, password } = req.body;

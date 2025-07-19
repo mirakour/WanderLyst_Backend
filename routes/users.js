@@ -1,13 +1,12 @@
 import express from 'express';
 import client from '../db/client.js';
 import requireUser from '../middleware/auth.js';
-import {verifyToken} from './auth.js'
 import { getUserById, getUserId } from '../db/queries/users.js'
 
 const router = express.Router();
 
 // GET /api/user/me
-router.get('/me', verifyToken, async (req, res) => {
+router.get('/me', requireUser, async (req, res) => {
 
   const id = req.user.id
 
