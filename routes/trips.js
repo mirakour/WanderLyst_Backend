@@ -75,7 +75,7 @@ router.post("/", requireUser, async (req, res) => {
 //get events in the trip
 router.get("/:id/events", requireUser, async (req, res) => {
     const id = Number(req.params.id);
-    const events = getTripEvents(id);
+    const events = await getTripEvents(id);
     if (!events) {
     return res.status(404).send({ error: "events doesnt exist" });
   }
