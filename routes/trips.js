@@ -84,6 +84,10 @@ router.get("/:id/events", requireUser, async (req, res) => {
 
 //post event to a trip
 router.post("/:id/events", requireUser, async (req, res) => {
+  if(!req.body.title){
+    return res.status(400).send({ message: "please input a title" });
+  }
+
   const id = Number(req.params.id);
   createEvent({
     trip_id: id,
@@ -92,7 +96,7 @@ router.post("/:id/events", requireUser, async (req, res) => {
     status: req.body.status, 
     created_by: req.body.created_by
   })
-  res.status(201).send("event created");
+  res.status(201).send({ message: "event created"});
 });
 
 
