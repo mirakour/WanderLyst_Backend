@@ -53,7 +53,26 @@ export async function makeTripPrivate(id) {
 
 //delete a trip of a certain id
 export async function deleteTripId(id) {
-  const sql = `DELETE FROM trip WHERE id = $1 RETURNING *;`;
+
+  // Delete associated events, trip members, comments, favorites, and tasks if they exist
+  const deleteEvents = `DELETE FROM event WHERE trip_id = $1;`;
+  await db.query(deleteEvents, [id]);
+
+  const deleteTripMembers = `DELETE FROM trip_member WHERE trip_id = $1;`;
+  await db.query(deleteTripMembers, [id]);
+
+  const deleteComments = `DELETE FROM comment WHERE trip_id = $1;`;
+  await db.query(deleteComments, [id]);
+
+  const deleteFavorites = `DELETE FROM favorite WHERE trip_id = $1;`;
+  await db.query(deleteFavorites, [id]);
+
+  const deleteTasks = `DELETE FROM task WHERE trip_id = $1;`;
+  await db.query(deleteTasks, [id]);
+
+  // Now delete the trip
+  const sql = `
+  DELETE FROM trip WHERE id = $1 RETURNING *;`;
   const { rows: [deletedTrip] } = await db.query(sql, [id]);
   return deletedTrip;
 }
