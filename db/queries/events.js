@@ -17,7 +17,7 @@ export async function getTripEvents(trip_id) {
 export async function getEvent(id) {
   const sql = await db.query(`SELECT * FROM event WHERE id = $1;`,
   [id])
-  return sql.rows
+  return sql.rows[0]
 }
 
 export async function editEvent(trip_id, status) {
