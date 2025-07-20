@@ -3,7 +3,7 @@ import db from "../db/client.js";
 import { createTrip, getMyTrips, getTripId, getPublicTripId, getPublic_SharedTrips, makeTripPublic, makeTripPrivate, deleteTripId } from "../db/queries/trips.js";
 import { getTripMember } from "../db/queries/trip_members.js";
 import requireUser from "../middleware/auth.js";
-import { getTripEvents, createEvent } from "../db/queries/events.js";
+import { getTripEvents, createEvent, editEvent } from "../db/queries/events.js";
 
 const router = express.Router();
 router.get("/public", async (req, res) => {
@@ -29,16 +29,6 @@ router.get("/public/:id", async (req, res) => {
     return res.status(404).send({ error: "trip doesnt exist" });
   }
   res.send(tripId);
-});
-
-//get events in the trip
-router.get("/public/:id/events", async (req, res) => {
-    const id = Number(req.params.id);
-    const events = await getTripEvents(id);
-    if (!events) {
-    return res.status(404).send({ error: "events doesnt exist" });
-  }
-  res.status(200).send(events);
 });
 
 //get trip user is a part of
@@ -75,7 +65,6 @@ router.post("/", requireUser, async (req, res) => {
   res.sendStatus(201);
 });
 
-
 //get events in the trip
 router.get("/:id/events", requireUser, async (req, res) => {
     const id = Number(req.params.id);
@@ -102,6 +91,16 @@ router.post("/:id/events", requireUser, async (req, res) => {
   })
   res.status(201).send({ message: "event created"});
 });
+
+//edits the event status
+router.put("/:id/events", requireUser, async (req, res) => {
+  if(!req.body.status){
+    return res.status(400).send({ message: "please input a status" });
+  }
+  const id = Number(req.params.id);
+  editEvent(id, req.body.status)
+  res.status(201).send({message: "status updated"})
+})
 
 
 //get trip members
