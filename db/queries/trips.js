@@ -46,7 +46,7 @@ export async function makeTripPublic(id) {
 
 // Update trip details to make it private
 export async function makeTripPrivate(id) {
-  const sql = `UPDATE trip SET public_shared = true WHERE id = $1 RETURNING *;`;
+  const sql = `UPDATE trip SET public_shared = false WHERE id = $1 RETURNING *;`;
   const { rows: [updatedTrip] } = await db.query(sql, [id]);
   return updatedTrip;
 }
