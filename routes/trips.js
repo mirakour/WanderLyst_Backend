@@ -1,6 +1,6 @@
 import express from "express";
 import db from "../db/client.js";
-import { createTrip, getMyTrips, getTripId, getPublicTripId, getPublic_SharedTrips, makeTripPublic, makeTripPrivate, deleteTripId } from "../db/queries/trips.js";
+import { createTrip, getMyTrips, getTripId, getPublicTripId, getPublic_SharedTrips, makeTripPublic, makeTripPrivate, deleteTripId, updateTrip } from "../db/queries/trips.js";
 import { getTripMember } from "../db/queries/trip_members.js";
 import requireUser from "../middleware/auth.js";
 import { getTripEvents, createEvent } from "../db/queries/events.js";
@@ -72,7 +72,7 @@ router.post("/", requireUser, async (req, res) => {
   });
 
   console.log(newTrip)
-  res.sendStatus(201);
+  res.sendStatus(201).send(newTrip);
 });
 
 
@@ -154,6 +154,33 @@ router.get("/:id", requireUser, async (req, res) => {
   res.send(tripId);
 });
 
+//Update Trip
+router.patch("/:id", requireUser, async (req, res) => {
+  const id = req.params.id;
+  const { title, description, public_shared, start_date, end_date } = req.body;
+
+  try {
+    const updatedTrip = await updateTrip({
+      id,
+      title,
+      description,
+      public_shared,
+      start_date,
+      end_date,
+      created_by: req.user.id
+    });
+    if (!updatedTrip) {
+      return res.status(404).send({ error: "Trip not found" });
+    }
+    res.status(200).send(updatedTrip);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send({ error: "Failed to update trip" });
+  }
+});
+
+
+//Delete trip
 router.delete("/:id", requireUser, async (req, res) => {
   const id = req.params.id;
   const tripId = await deleteTripId(id);
