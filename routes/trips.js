@@ -1,7 +1,12 @@
 import express from "express";
 import db from "../db/client.js";
 import { createTrip, getMyTrips, getTripId, getPublicTripId, getPublic_SharedTrips, makeTripPublic, makeTripPrivate, deleteTripId, updateTrip } from "../db/queries/trips.js";
-import { getTripMember } from "../db/queries/trip_members.js";
+import {
+  getTripMember,
+  addTripMember,
+  updateTripMember,
+  deleteTripMember
+} from "../db/queries/trip_members.js";
 import requireUser from "../middleware/auth.js";
 import { getTripEvents, createEvent } from "../db/queries/events.js";
 
@@ -188,6 +193,49 @@ router.delete("/:id", requireUser, async (req, res) => {
     return res.status(404).send({ error: "trip doesnt exist" });
   }
   res.send(tripId);
+});
+
+// POST - Add a member to a trip
+router.post("/:id/members", requireUser, async (req, res) => {
+  const tripId = Number(req.params.id);
+  const { email } = req.body;
+  try {
+    const newMember = await addTripMember(tripId, email);
+    const updatedMembers = await getTripMember(tripId);
+    res.status(201).send(updatedMembers);
+  } catch (err) {
+    console.error(err);
+    res.status(500).send({ error: "Failed to add member" });
+  }
+});
+
+// PATCH - Edit a member email
+router.patch("/:id/members/:memberId", requireUser, async (req, res) => {
+  const tripId = Number(req.params.id);
+  const memberId = Number(req.params.memberId);
+  const { email } = req.body;
+  try {
+    const updatedMember = await updateTripMember(memberId, email);
+    const updatedMembers = await getTripMember(tripId);
+    res.status(200).send(updatedMembers);
+  } catch (err) {
+    console.error(err);
+    res.status(500).send({ error: "Failed to update member" });
+  }
+});
+
+// DELETE - Remove a member
+router.delete("/:id/members/:memberId", requireUser, async (req, res) => {
+  const tripId = Number(req.params.id);
+  const memberId = Number(req.params.memberId);
+  try {
+    const deleted = await deleteTripMember(memberId);
+    const updatedMembers = await getTripMember(tripId);
+    res.status(200).send(updatedMembers);
+  } catch (err) {
+    console.error(err);
+    res.status(500).send({ error: "Failed to delete member" });
+  }
 });
 
 export default router;
