@@ -93,26 +93,6 @@ router.post("/:id/events", requireUser, async (req, res) => {
   res.status(201).send({ message: "event created"});
 });
 
-//edits the event status
-router.put("/:id/events", requireUser, async (req, res) => {
-  if(!req.body.status){
-    return res.status(400).send({ message: "please input a status" });
-  }
-  const id = Number(req.params.id);
-  editEvent(id, req.body.status)
-  res.status(201).send({message: "status updated"})
-})
-
-//deletes the event
-router.delete("/:id/events", requireUser, async (req, res) => {
-  if(!req.body.id){
-    return res.status(400).send({ message: "please input an event id" });
-  }
-deleteEvent(req.body.id)
-res.status(201).send({ message: "event deleted"});
-})
-
-
 //get trip members
 router.get("/:id/members", requireUser, async (req, res) => {
   const id = Number(req.params.id);
