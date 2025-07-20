@@ -8,9 +8,9 @@ export async function createEvent({trip_id, title, location, date_time, status, 
   return result;
 }
 
-export async function editEvent(trip_id, title, location, date_time, status) {
-  const sql = await db.query(`UPDATE event SET title = $1, location = $2, date_time = $3, status = $4 WHERE id = $5;`,
-  [title, location, date_time, status, trip_id]
+export async function editEvent(trip_id, status) {
+  const sql = await db.query(`UPDATE event SET status = $1  WHERE id = $2;`,
+  [status, trip_id]
   );
 }
 
