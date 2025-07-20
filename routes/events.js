@@ -32,7 +32,6 @@ router.put("/:id", requireUser, async (req, res) => {
         return res.status(404).send({ error: "event does not exsist" });
     }
 
-    console.log(newStatus)
   editEvent(id, newStatus)
   res.status(201).send({message: "status updated"})
 })
