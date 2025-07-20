@@ -1,10 +1,29 @@
 import db from "../client.js";
 
 
-export async function createTrip({title, description, public_shared, start_date, end_date, created_by,
-}) { const {rows: [result] } = await db.query(
+export async function createTrip({title, description, public_shared, start_date, end_date, created_by,}) {
+   const {rows: [result] } = await db.query(
     `INSERT INTO trip (title, description, public_shared, start_date, end_date, created_by) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *;`,
     [title, description, public_shared, start_date, end_date, created_by]
+  );
+  console.log(result);
+  return result;
+
+}
+
+export async function updateTrip({id, title, description, public_shared, start_date, end_date, created_by,}) {
+   const {rows: [result] } = await db.query(
+    `
+    UPDATE trip
+    SET title = $2,
+        description = $3,
+        public_shared = $4,
+        start_date = $5,
+        end_date = $6,
+        created_by = $7
+    WHERE id = $1 RETURNING *;
+    `,
+    [id, title, description, public_shared, start_date, end_date, created_by]
   );
   console.log(result);
   return result;
