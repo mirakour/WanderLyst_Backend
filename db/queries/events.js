@@ -8,17 +8,22 @@ export async function createEvent({trip_id, title, location, date_time, status, 
   return result;
 }
 
-export async function editEvent(trip_id, status) {
-  console.log(status)
-  const sql = await db.query(`UPDATE event SET status = $2 WHERE trip_id = $1;`,
-  [trip_id, status]
-  );
-}
-
 export async function getTripEvents(trip_id) {
   const sql = `SELECT * FROM event WHERE trip_id = $1;`;
   const { rows: events } = await db.query(sql, [trip_id]);
   return events;
+}
+
+export async function getEvent(id) {
+  const sql = await db.query(`SELECT * FROM event WHERE id = $1;`,
+  [id])
+  return sql.rows
+}
+
+export async function editEvent(trip_id, status) {
+  const sql = await db.query(`UPDATE event SET status = $2 WHERE trip_id = $1;`,
+  [trip_id, status]
+  );
 }
 
 export async function deleteEvent(id) {
