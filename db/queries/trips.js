@@ -50,3 +50,10 @@ export async function makeTripPrivate(id) {
   const { rows: [updatedTrip] } = await db.query(sql, [id]);
   return updatedTrip;
 }
+
+//delete a trip of a certain id
+export async function deleteTripId(id) {
+  const sql = `DELETE FROM trip WHERE id = $1 RETURNING *;`;
+  const { rows: [deletedTrip] } = await db.query(sql, [id]);
+  return deletedTrip;
+}

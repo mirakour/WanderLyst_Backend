@@ -1,6 +1,6 @@
 import express from "express";
 import db from "../db/client.js";
-import { createTrip, getMyTrips, getTripId, getPublicTripId, getPublic_SharedTrips, makeTripPublic, makeTripPrivate } from "../db/queries/trips.js";
+import { createTrip, getMyTrips, getTripId, getPublicTripId, getPublic_SharedTrips, makeTripPublic, makeTripPrivate, deleteTripId } from "../db/queries/trips.js";
 import { getTripMember } from "../db/queries/trip_members.js";
 import requireUser from "../middleware/auth.js";
 import { getTripEvents, createEvent } from "../db/queries/events.js";
@@ -148,6 +148,15 @@ router.patch("/:id/private", requireUser, async (req, res) => {
 router.get("/:id", requireUser, async (req, res) => {
   const id = req.params.id;
   const tripId = await getTripId(id);
+  if (!tripId) {
+    return res.status(404).send({ error: "trip doesnt exist" });
+  }
+  res.send(tripId);
+});
+
+router.delete("/:id", requireUser, async (req, res) => {
+  const id = req.params.id;
+  const tripId = await deleteTripId(id);
   if (!tripId) {
     return res.status(404).send({ error: "trip doesnt exist" });
   }
