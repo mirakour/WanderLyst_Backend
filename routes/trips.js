@@ -1,6 +1,6 @@
 import express from "express";
 import db from "../db/client.js";
-import { createTrip, getMyTrips, getTripId, getPublicTripId, getPublic_SharedTrips } from "../db/queries/trips.js";
+import { createTrip, getMyTrips, getTripId, getPublicTripId, getPublic_SharedTrips, makeTripPublic, makeTripPrivate } from "../db/queries/trips.js";
 import { getTripMember } from "../db/queries/trip_members.js";
 import requireUser from "../middleware/auth.js";
 import { getTripEvents, createEvent } from "../db/queries/events.js";
@@ -114,6 +114,35 @@ router.get("/:id/members", requireUser, async (req, res) => {
   res.send(tripMemberId);
 });
 
+// Make a trip public
+router.patch("/:id/public", requireUser, async (req, res) => {
+  try {
+    const id = req.params.id;
+    const updatedTrip = await makeTripPublic(id);
+    if (!updatedTrip) {
+      return res.status(404).send({ error: "Trip not found" });
+    }
+    res.status(200).send(updatedTrip);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send({ error: "Failed to update trip: Trip is still private" });
+  }
+});
+
+// Make a trip private
+router.patch("/:id/private", requireUser, async (req, res) => {
+  try {
+    const id = req.params.id;
+    const updatedTrip = await makeTripPrivate(id);
+    if (!updatedTrip) {
+      return res.status(404).send({ error: "Trip not found" });
+    }
+    res.status(200).send(updatedTrip);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send({ error: "Failed to update trip: Trip is still public" });
+  }
+});
 
 //get trip details
 router.get("/:id", requireUser, async (req, res) => {
