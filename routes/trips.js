@@ -85,7 +85,8 @@ router.post("/:id/events", requireUser, async (req, res) => {
   createEvent({
     trip_id: id,
     title: req.body.title, 
-    location: req.body.location, 
+    location: req.body.location,
+    date_time: req.body.date_time, 
     status: req.body.status, 
     created_by: req.body.created_by
   })
