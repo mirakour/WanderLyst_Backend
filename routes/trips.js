@@ -3,7 +3,7 @@ import db from "../db/client.js";
 import { createTrip, getMyTrips, getTripId, getPublicTripId, getPublic_SharedTrips, makeTripPublic, makeTripPrivate, deleteTripId } from "../db/queries/trips.js";
 import { getTripMember } from "../db/queries/trip_members.js";
 import requireUser from "../middleware/auth.js";
-import { getTripEvents, createEvent, editEvent } from "../db/queries/events.js";
+import { getTripEvents, createEvent, editEvent, deleteEvent } from "../db/queries/events.js";
 
 const router = express.Router();
 router.get("/public", async (req, res) => {
@@ -101,6 +101,15 @@ router.put("/:id/events", requireUser, async (req, res) => {
   const id = Number(req.params.id);
   editEvent(id, req.body.status)
   res.status(201).send({message: "status updated"})
+})
+
+//deletes the event
+router.delete("/:id/events", requireUser, async (req, res) => {
+  if(!req.body.id){
+    return res.status(400).send({ message: "please input an event id" });
+  }
+deleteEvent(req.body.id)
+res.status(201).send({ message: "event deleted"});
 })
 
 

@@ -21,6 +21,11 @@ export async function getTripEvents(trip_id) {
   return events;
 }
 
+export async function deleteEvent(id) {
+  const sql = await db.query(`DELETE FROM event WHERE id = $1;`,
+  [id]
+);
+}
 
 //get all trips with logged in user
 export async function getMyTrips(id) {
