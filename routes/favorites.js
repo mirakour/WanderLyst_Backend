@@ -1,5 +1,5 @@
 import express from 'express';
-import { createFavorite, getFavoritesByUser, deleteFavorite } from '../db/queries/favorites.js';
+import { createFavorite, getFavoritesByUser, deleteFavorite, checkFavoritesById } from '../db/queries/favorites.js';
 import requireUser from '../middleware/auth.js';
 
 const router = express.Router();
@@ -10,6 +10,19 @@ router.get('/', requireUser, async (req, res) => {
     const user_id = req.user.id;
     const favorites = await getFavoritesByUser(user_id);
     res.json({ favorites });
+  } catch (err) {
+    console.error('❌ Error fetching favorites:', err);
+    res.status(500).json({ error: 'Failed to fetch favorites' });
+  }
+});
+
+// GET /api/favorites - Get all favorites for the logged-in user
+router.get('/:id', requireUser, async (req, res) => {
+  try {
+    const user_id = req.user.id;
+    const trip_id = req.params.id;
+    const favorite = await checkFavoritesById({user_id, trip_id});
+    res.json({ favorite });
   } catch (err) {
     console.error('❌ Error fetching favorites:', err);
     res.status(500).json({ error: 'Failed to fetch favorites' });

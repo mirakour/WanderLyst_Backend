@@ -20,12 +20,12 @@ export async function getFavoritesByUser(user_id) {
 }
 
 // Get favorites for a specific user
-export async function getFavoritesById(trip_id) {
+export async function checkFavoritesById({ user_id, trip_id }) {
   const { rows } = await db.query(
-    "SELECT * FROM favorite WHERE trip_id = $1;",
-    [trip_id]
+    "SELECT * FROM favorite WHERE user_id = $1 AND trip_id = $2;",
+    [user_id, trip_id]
   );
-  return rows;
+  return rows[0];
 }
 
 
