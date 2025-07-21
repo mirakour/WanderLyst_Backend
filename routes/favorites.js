@@ -1,5 +1,5 @@
 import express from 'express';
-import { createFavorite, getFavoritesByUser, deleteFavorite } from '../db/queries/favorites.js';
+import { createFavorite, getFavoritesByUser, deleteFavorite, checkFavoritesById } from '../db/queries/favorites.js';
 import requireUser from '../middleware/auth.js';
 
 const router = express.Router();
@@ -16,10 +16,23 @@ router.get('/', requireUser, async (req, res) => {
   }
 });
 
+// GET /api/favorites - Get all favorites for the logged-in user
+router.get('/:id', requireUser, async (req, res) => {
+  try {
+    const user_id = req.user.id;
+    const trip_id = req.params.id;
+    const favorite = await checkFavoritesById({user_id, trip_id});
+    res.json({ favorite });
+  } catch (err) {
+    console.error('❌ Error fetching favorites:', err);
+    res.status(500).json({ error: 'Failed to fetch favorites' });
+  }
+});
+
 // POST /api/favorites - Add a favorite trip for the logged-in user
-router.post('/', requireUser, async (req, res) => {
+router.post('/:id', requireUser, async (req, res) => {
   const user_id = req.user.id;
-  const { trip_id } = req.body;
+  const trip_id = req.params.id;
 
   if (!trip_id) {
     return res.status(400).json({ error: 'trip_id is required' });
@@ -35,9 +48,9 @@ router.post('/', requireUser, async (req, res) => {
 });
 
 // DELETE /api/favorites - Remove a favorite trip for the logged-in user
-router.delete('/', requireUser, async (req, res) => {
+router.delete('/:id', requireUser, async (req, res) => {
   const user_id = req.user.id;
-  const { trip_id } = req.body;
+  const trip_id = req.params.id;
 
   if (!trip_id) {
     return res.status(400).json({ error: 'trip_id is required' });
