@@ -1,9 +1,9 @@
 import db from "../client.js";
 
-export async function createEvent({trip_id, title, location, status, created_by}) {
+export async function createEvent({trip_id, title, location, date_time, status, created_by}) {
   const result = await db.query(
-    `INSERT INTO event (trip_id, title, location, status, created_by) VALUES ($1, $2, $3, $4, $5) RETURNING *;`,
-    [trip_id, title, location, status, created_by]
+    `INSERT INTO event (trip_id, title, location, date_time, status, created_by) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *;`,
+    [trip_id, title, location, date_time, status, created_by]
   );
   return result;
 }
@@ -14,6 +14,23 @@ export async function getTripEvents(trip_id) {
   return events;
 }
 
+export async function getEvent(id) {
+  const sql = await db.query(`SELECT * FROM event WHERE id = $1;`,
+  [id])
+  return sql.rows[0]
+}
+
+export async function editEvent(id, status) {
+  const sql = await db.query(`UPDATE event SET status = $2 WHERE id = $1;`,
+  [id, status]
+  );
+}
+
+export async function deleteEvent(id) {
+  const sql = await db.query(`DELETE FROM event WHERE id = $1;`,
+  [id]
+);
+}
 
 //get all trips with logged in user
 export async function getMyTrips(id) {

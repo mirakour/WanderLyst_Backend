@@ -8,6 +8,7 @@ import taskRoutes from './routes/tasks.js';
 import tripRoutes from  './routes/trips.js'
 import voteRoutes from './routes/votes.js';
 import commentRouter from './routes/comments.js';
+import eventRoutes from './routes/events.js';
 
 
 const app = express();
@@ -25,6 +26,7 @@ app.use('/api/favorites', favoriteRoutes);
 app.use('/api/tasks', taskRoutes);
 app.use('/api/votes', voteRoutes);
 app.use('/api/comments', commentRouter);
+app.use('/api/events', eventRoutes)
 app.use('/auth', authRoutes);
 
 
