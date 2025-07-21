@@ -17,9 +17,9 @@ router.get('/', requireUser, async (req, res) => {
 });
 
 // POST /api/favorites - Add a favorite trip for the logged-in user
-router.post('/', requireUser, async (req, res) => {
+router.post('/:id', requireUser, async (req, res) => {
   const user_id = req.user.id;
-  const { trip_id } = req.body;
+  const trip_id = req.params.id;
 
   if (!trip_id) {
     return res.status(400).json({ error: 'trip_id is required' });
@@ -35,9 +35,9 @@ router.post('/', requireUser, async (req, res) => {
 });
 
 // DELETE /api/favorites - Remove a favorite trip for the logged-in user
-router.delete('/', requireUser, async (req, res) => {
+router.delete('/:id', requireUser, async (req, res) => {
   const user_id = req.user.id;
-  const { trip_id } = req.body;
+  const trip_id = req.params.id;
 
   if (!trip_id) {
     return res.status(400).json({ error: 'trip_id is required' });
