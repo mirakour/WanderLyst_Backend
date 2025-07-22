@@ -6,7 +6,7 @@ export async function createTrip({title, description, public_shared, start_date,
     `INSERT INTO trip (title, description, public_shared, start_date, end_date, created_by) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *;`,
     [title, description, public_shared, start_date, end_date, created_by]
   );
-  console.log(result);
+  //console.log(result);
   return result;
 
 }
@@ -25,7 +25,7 @@ export async function updateTrip({id, title, description, public_shared, start_d
     `,
     [id, title, description, public_shared, start_date, end_date, created_by]
   );
-  console.log(result);
+  //////console.log(result);
   return result;
 
 }
