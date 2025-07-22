@@ -9,6 +9,15 @@ export async function getTripMember(tripId) {
   return rows;
 }
 
+// Add a new trip member
+export async function createTripMember({ trip_id, user_email, user_id }) {
+  const sql = `INSERT INTO trip_member (trip_id, user_email, user_id)
+               VALUES ($1, $2, $3)
+               RETURNING *;`;
+  const { rows: [newMember] } = await db.query(sql, [trip_id, user_email, user_id]);
+  return newMember;
+}
+
 // Add a member by email
 export async function addTripMember(tripId, user_email) {
   // Look up user_id from email

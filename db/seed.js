@@ -6,7 +6,7 @@ import { createTrip } from "./queries/trips.js";
 import { createUser } from "./queries/users.js";
 import { createTask } from "./queries/tasks.js";
 import { createVote } from "./queries/votes.js";
-import { createTripMember } from "./queries/trip_members.js";
+import { addTripMember, createTripMember } from "./queries/trip_members.js";
 import { createComment } from "./queries/comments.js";
 import bcrypt from "bcrypt";
 
@@ -95,61 +95,61 @@ async function seed() {
 
 
     const trip_member1 = await createTripMember({
-      user_email: user1.email,
+      user_email: "1test@test.com",
       user_id: user1.id,
       trip_id: trip1.id,
     });
 
     const trip_member2 = await createTripMember({
-      user_email: user2.email,
+      user_email: "2test@test.com",
       user_id: user2.id,
       trip_id: trip1.id,
     });
 
     const trip_member3 = await createTripMember({
-      user_email: user3.email,
+      user_email: "3test@test.com",
       user_id: user3.id,
       trip_id: trip1.id,
     });
 
     const trip_member4 = await createTripMember({
-      user_email: user4.email,
+      user_email: "4test@test.com",
       user_id: user4.id,
       trip_id: trip1.id,
     });
 
     const trip_member5 = await createTripMember({
-      user_email: user3.email,
+      user_email: "3test@test.com",
       user_id: user3.id,
       trip_id: trip2.id,
     });
 
     const trip_member6 = await createTripMember({
-      user_email: user4.email,
+      user_email: "4test@test.com",
       user_id: user4.id,
       trip_id: trip2.id,
     });
 
      const trip_member7 = await createTripMember({
-      user_email: user5.email,
+      user_email: "5test@test.com",
       user_id: user5.id,
       trip_id: trip2.id,
     });
 
     const trip_member8 = await createTripMember({
-      user_email: user6.email,
+      user_email: "6test@test.com",
       user_id: user6.id,
       trip_id: trip2.id,
     });
 
      const trip_member9 = await createTripMember({
-      user_email: user5.email,
+      user_email: "5test@test.com",
       user_id: user5.id,
       trip_id: trip3.id,
     });
 
     const trip_member10 = await createTripMember({
-      user_email: user7.email,
+      user_email: "7test@test.com",
       user_id: user7.id,
       trip_id: trip4.id,
     });
@@ -168,7 +168,7 @@ async function seed() {
       title: "First Task",
       description: "First task description",
       due_date: "2025-07-03T21:47:06.143Z",
-      assigned_to: user1.email,
+      assigned_to: "1test@test.com",
       complete: false,
       created_by: user1.id,
     });
