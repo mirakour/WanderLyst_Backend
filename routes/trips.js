@@ -67,7 +67,7 @@ router.post("/", requireUser, async (req, res) => {
   });
 
   console.log(newTrip)
-  res.sendStatus(201).send(newTrip);
+  res.status(201).json(newTrip);
 });
 
 //get events in the trip
