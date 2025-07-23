@@ -36,6 +36,16 @@ router.get("/public/:id", async (req, res) => {
   res.send(tripId);
 });
 
+//get public events in the trip
+router.get("/public/:id/events", async (req, res) => {
+    const id = Number(req.params.id);
+    const events = await getTripEvents(id);
+    if (!events) {
+    return res.status(404).send({ error: "events doesnt exist" });
+  }
+  res.status(200).send(events);
+});
+
 //get trip user is a part of
 router.get("/mytrips",requireUser, async (req, res) => {
 try {
